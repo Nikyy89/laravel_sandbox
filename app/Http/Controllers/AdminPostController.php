@@ -15,7 +15,7 @@ class AdminPostController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware(['role:admin']);
+        //$this->middleware(['roles:admin']);
     }
 
     public function index(Request $request, Posts $post = null){
@@ -44,8 +44,8 @@ class AdminPostController extends Controller
 
     public function create_new_post(Request $request){
         $user_id = auth()->user()->id;
-
-        if (Auth::user()->hasPermissionTo('post_create')) {
+        //if (Auth::user()->hasPermissionTo('post_create')) {
+        if(auth()->user()->permissions[0]->name == 'post_create'){
             $new_post = Posts::create([
                 'user_id' => $user_id,
                 'title' => $request['title'],
@@ -60,7 +60,8 @@ class AdminPostController extends Controller
     }
 
     public function edit(Request $request, Posts $post){
-        if (Auth::user()->hasPermissionTo('post_update')) {
+        //if (Auth::user()->hasPermissionTo('post_update')) {
+        if(auth()->user()->permissions[1]->name == 'post_update'){
             $post->title = $request['title'];
             $post->content = $request['content'];
             $post->save();
@@ -76,7 +77,8 @@ class AdminPostController extends Controller
         // Add log in database
         System_logs::addToLog('web', 'Hír törlése', 'AdminPostController', 'DeletePost');
 
-        if (Auth::user()->hasPermissionTo('post_delete')) {
+        //if (Auth::user()->hasPermissionTo('post_delete')) {
+            if(auth()->user()->permissions[2]->name == 'post_delete'){
             $post->delete();
 
             return response()->json([

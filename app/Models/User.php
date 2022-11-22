@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasPermissions;
@@ -13,7 +14,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable, HasRoles, HasPermissions;
 
     protected $fillable = [
-        'username', 'name', 'gender','birth_date', 'phone', 'email', 'password', 'image',
+        'username', 'name', 'gender','birth_date', 'phone', 'email', 'password', 'image_name', 'image_path',
     ];
 
     protected $hidden = [
@@ -61,6 +62,6 @@ class User extends Authenticatable
 
     public function systemLog()
     {
-        return $this->hasMany(SystemLog::class, 'id', 'user_id');
+        return $this->hasMany(System_logs::class, 'id', 'user_id');
     }
 }

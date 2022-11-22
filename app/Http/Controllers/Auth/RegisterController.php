@@ -32,14 +32,15 @@ class RegisterController extends Controller
             //'phone' => ['required', 'string', 'max:25'],
             'phone' => ['required', 'regex:/^(\+\d{1,3}[- ]?)?\d{10}$/', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'image' => ['required', 'image', 'mimes:jpg,png,jpeg,gif,svg|max:2048'],
+            'image_name' => ['required', 'string', 'unique:users'],
+            'image_path' => ['required', 'string', 'unique:users']
         ]);
     }
 
     protected function create(array $data)
     {
         $user = auth()->user();
-        $data->file('image')->store('users', 'public');
+        //$data->file('image')->store('users', 'public');
 
         return User::create([
             'username' => $data['username'],
@@ -49,16 +50,17 @@ class RegisterController extends Controller
             'birth_date' => $data['birth_date'],
             'phone' => $data['phone'],
             'password' => Hash::make($data['password']),
-            'image_name' => $data->file('image')->getClientOriginalName(),
-            'image_path' =>$data->file('image')->hashName()
-        ]);
+            'image_name' => is_null(),
+            'image_path' => is_null()
+        ])->toSql();
 
+        ddd($data);
 
 
         return redirect('login')->with('success', 'Your account has been created');
     }
 
-    /*
+/*
     public function upload_image(Request $request)
     {
         $request->validate([
@@ -75,5 +77,5 @@ class RegisterController extends Controller
 
         return redirect('register')->with('success', 'Image Has been uploaded successfully.');
     }
-    */
+*/
 }

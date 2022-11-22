@@ -11,6 +11,7 @@ use App\Http\Controllers\NemKedvencekController;
 use App\Http\Controllers\Auth\ProfilomController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\NetflixController;
+use App\Http\Controllers\Auth\RegisterController;
 
 
 Route::get('/', [App\Http\Controllers\WelcomeController::class, 'index']);
